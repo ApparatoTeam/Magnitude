@@ -17,8 +17,10 @@ define([], function(){
             
             self.preparation.init( function(){
                 //self.timer.init();
+                
                 self.character.init();
                 self.debris.init();
+                self.endGame.init();
              });
             
          },
@@ -134,10 +136,38 @@ define([], function(){
          }, /*-- timer --*/
         
         endGame : {
+            
+            result : false,
             callback : null,
             init : function( result, callback ){
+                this.result = result;
                 this.callback = callback;
-                ( result ) ? this.completed() : this.gameOver() ;
+                
+                this.easeIn();
+             },
+            
+            easeIn : function( self ){
+                self = this;
+                
+                (new TimelineMax({
+                    onComplete : function(){
+                        return ( self.result ) ? self.completed() : self.gameOver();    
+                     }
+                 }))
+                .set( '#end-game-ui', {
+                    autoAlpha : 0
+                 })
+                .set( '#egu-slider', {
+                    y : '100%'
+                 })
+                .to( '#end-game-ui', 0.3, {
+                    autoAlpha : 1
+                 })
+                .to( '#egu-slider', 0.8, {
+                    y : '0%',
+                    ease : Elastic.easeInOut
+                 })
+                
              },
             
             completed : function(){

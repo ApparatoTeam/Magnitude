@@ -2,9 +2,14 @@
     background: url(../img/assets/startup-bg.svg) no-repeat 50% 50% / 100% auto;
 }
 
+[data-page].scenes .navbar .left{
+    background-color: #00bcd4;
+    height: 100%;
+}
+
 [data-page].scenes .navbar .left #level-indicator{
     font: 16px/60% 'karnivoreregular';
-    margin-left: 15px;
+    padding: 0 15px;
 }
 
 [data-page].scenes .navbar .center{
@@ -617,6 +622,42 @@ svg.paused #leftCalf-foot{
     background-color: rgba(0,0,0,0.5);
     z-index: 1000;
     
-    display: none;
+    opacity: 0;
+    visibility: hidden;
 }
 
+[data-page].scenes #egu-slider{
+    position: absolute;
+    width: 100%;
+    height: calc(70% + 40px);
+    
+    bottom: -40px;
+    left: 0;
+    display: table;
+    padding-bottom: 40px;
+    
+    background: url(../img/assets/end-game-bg.png) no-repeat 0% 0% / 100% auto;
+    
+    -webkit-transform: translateY(100%);
+    transform: translateY(100%);
+}
+
+[data-page].scenes #egu-header{
+    width: 100px;
+    display: table-cell;
+    vertical-align: middle;
+    padding-left: 10%;
+    padding-right: 8%;
+    letter-spacing: 0;
+    background-color: rgba(244,67,54,0.5);
+    color: white;
+    font: 30px/100% 'karnivoreregular';
+}
+
+[data-page].scenes #egu-header > span{
+    display: block;
+}
+
+[data-page].scenes #egu-header .fa-trophy{
+    margin-right: 5px;
+}
