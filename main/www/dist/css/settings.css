@@ -1,0 +1,11 @@
+[data-page="settings"]{
+    background: url(../img/assets/settings-bg.svg) no-repeat center center;
+    background-size: 100%;
+}
+
+/*--
+ - Page content
+ --*/
+[data-page="settings"] .page-content{
+    padding: 10px 20px;
+}

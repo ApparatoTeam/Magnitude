@@ -1,0 +1,75 @@
+<div data-page="scenes" class="scenes page navbar-fixed toolbar-fixed">
+    
+    <div id="end-game-ui">
+        <div id="egu-slide">
+            
+        </div>
+    </div><!--/#end-game-ui-->
+    
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="left">
+                <section id="level-indicator">
+                    Level <span id="level-value">1</span>
+                </section>
+            </div>
+            
+            <div class="center">
+                <section id="timer-wrap">
+                    <div class="timer-icon"></div>
+                    <div class="timer-value">00:00</div>
+                </section>
+                
+                <section id="lives-wrap">
+                    <div class="lives-icon"></div>
+                    <div class="lives-value">3</div>
+                </section>
+            </div>
+            
+            <div class="right">
+                <a href="#" class="link" id="pause-game" data-panel="right">
+                    <i class="fa fa-fw fa-flag"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-content">
+        
+        <div id="grid-wrap">
+            <div class="grid"></div>
+            <div class="grid"></div>
+            <div class="grid"></div>
+            <div class="grid"></div>
+            <div class="grid"></div>
+            <div class="grid"></div>
+            <div class="grid"></div>
+            <div class="grid"></div>
+            <div class="grid"></div>
+        </div>
+        
+        <div id="debris-wrap"> </div><!--/#debris-wrap-->
+        
+        <div id="game-controller-wrap">
+            <nav id="move-left" class="move-key"></nav>
+            <nav id="move-right" class="move-key"></nav>
+        </div><!--/#game-controller-wrap-->
+        
+        <div id="character-wrap">
+            <svg id="character" class="paused" viewBox="0 0 130 130" preserveAspectRatio="xMidYMax meet"> <defs> <circle id="face" cx="10" cy="10" r="10"></circle> <path id="hair" d="M17.776058,0.640464561 C16.0097111,1.62470515 12.4371594,1.62470517 12.4371594,1.62470517 C12.4371594,1.62470517 4.39241145,0.520057594 1.56803908,8.14091714 C-1.35826917,16.036825 5.72481654,20.5129729 5.72481654,20.5129729 C6.12426548,15.3735416 8.23954171,14.4169148 8.23954171,14.4169148 C8.23954171,14.4169148 5.7248166,12.8486612 7.83905868,9.78215195 C9.31808738,8.14091708 9.7352213,12.1612518 9.7352213,12.1612518 C9.7352213,12.1612518 9.60696124,8.38461393 11.2230642,7.22929456 C12.4371593,6.29000928 18.5430792,5.59497573 18.5430792,5.59497573 C18.5430792,5.59497573 18.1630266,2.38857927 17.776058,0.640464561 Z"></path> <circle id="mouth" cx="16.5" cy="16.5" r="1"></circle> <line id="neck" x1="0" y1="0" x2="0" y2="5"/> <g id="shirt-arm"> <line id="shirt-shoulder" x1="0" y1="0" x2="0" y2="5"/> <line id="shirt-sleeve" x1="0" y1="4" x2="0" y2="5"/> </g> <g id="chest"> <line id="chest-up" x1="0" y1="0" x2="0" y2="20"/> <line id="chest-down" x1="0" y1="20" x2="0" y2="35"/> </g> <g id="forearm"> <line id="cubitus" x1="0" y1="0" x2="0" y2="10"/> <circle id="hand" cx="12" cy="10" r="8"></circle> </g> <line id="humerus" x1="0" y1="0" x2="0" y2="20"/> <g id="thigh"> <line id="femus" x1="0" y1="0" x2="0" y2="20"/> <g id="short"> <line id="short-up" x1="0" y1="0" x2="0" y2="10"/> <line id="short-down" x1="0" y1="5" x2="0" y2="10"/> </g> </g> <line id="tibia" x1="0" y1="20" x2="0" y2="40"/> <line id="foot" x1="0" y1="40" x2="10" y2="40"/> <line id="shoe" x1="0" y1="40" x2="10" y2="40"/> </defs> <g id="man"> <g id="lower"> <g id="leftLeg"> <use xlink:href="#femus"/> <use xlink:href="#short" id="leftLeg-short"/> <g id="leftCalf"> <use xlink:href="#tibia"/> <g id="leftCalf-foot"> <use xlink:href="#foot" id="leftFoot"/> <use xlink:href="#shoe" id="leftShoe"/> </g> </g> </g> <g id="rightLeg"> <use xlink:href="#femus"/> <use xlink:href="#short" id="rightLeg-short"/> <g id="rightCalf"> <use xlink:href="#tibia"/> <g id="rightCalf-foot"> <use xlink:href="#foot" id="rightFoot"/> <use xlink:href="#shoe" id="rightShoe"/> </g> </g> </g> </g> <g id="upper" > <g id="head"> <use xlink:href="#face"/> <use xlink:href="#hair"/> <use xlink:href="#mouth" id="head-mouth"/> </g> <use xlink:href="#neck"/> <g id="body"> <g id="body-leftArm"> <g id="leftArm"> <use xlink:href="#humerus" id="leftArm-humerus"/> <use xlink:href="#shirt-arm" id="leftArm-shirt"/> <use xlink:href="#forearm" id="leftArm-forearm"/> </g> </g> <g id="body-chest"> <use xlink:href="#chest"/> </g> <g id="body-shirt"> <use xlink:href="#chest"/> </g> <g id="body-rightArm"> <g id="rightArm"> <use xlink:href="#forearm" id="rightArm-forearm"/> <use xlink:href="#humerus" id="rightArm-humerus"/> <use xlink:href="#shirt-arm" id="rightArm-shirt"/> </g> </g> </g> </g> </g> </svg>
+        </div><!--/#character-->
+        
+        <div id="prep-wrap">
+            <div class="prep-mask">
+                <div class="prep-roller">
+                    <section>3</section>
+                    <section>2</section>
+                    <section>1</section>
+                    <section>run!</section>
+                </div>
+            </div>
+        </div><!--/#prep-wrap-->
+        
+    </div><!--/.page-content-->
+    
+</div>

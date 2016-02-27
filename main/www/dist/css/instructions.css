@@ -1,0 +1,11 @@
+[data-page="instructions"]{
+    background: url(../img/assets/instructions-bg.png) no-repeat center 60%;
+    background-size: 100%;
+}
+
+/*--
+ - Page content
+ --*/
+[data-page="instructions"] .page-content{
+    padding: 10px 20px;
+}

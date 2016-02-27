@@ -1,0 +1,228 @@
+#character { 
+    position: absolute;
+    width: inherit;
+    height: inherit;
+    bottom: 0;
+}
+
+/*
+* Man
+* ----
+*/
+#man {
+    -webkit-transform: translate(0px, 0px);
+    transform: translate(0px, 0px);
+}
+
+/*
+* Lower
+* ----
+*/
+
+#lower {
+    -webkit-transform: translate(10px, 65px);
+    transform: translate(10px, 65px);
+}
+
+/*
+* Short
+* ----
+*/
+
+#short { 
+    stroke: currentColor; 
+    stroke-width: 8px;
+    
+    -webkit-transform: translateX(0px);
+    transform: translateX(0px);
+}
+
+#short-up { stroke-linecap: round; }
+#short-down { stroke-linecap: square; }
+
+/*
+* Legs
+* ----
+*/
+
+/* General */
+#femus { stroke: currentColor; stroke-width: 6px; stroke-linecap: round; }
+#tibia { stroke: currentColor; stroke-width: 6px; stroke-linecap: round; }
+#foot { stroke: #FFDFC4; stroke-width: 6px; stroke-linecap: round; }
+#shoe { stroke: #f39c12; stroke-width: 6px; stroke-linecap: round; }
+
+/* Specific */
+#leftLeg {
+    color: rgb(255, 216, 184);
+    -webkit-transform-origin: top top;
+    transform-origin: top top;
+
+    -webkit-transform: rotateZ(-40deg);
+    transform: rotateZ(-40deg);
+}
+
+#leftCalf {
+    -webkit-transform-origin: top left;
+    transform-origin: top left;
+    -webkit-transform: rotateZ(10deg);
+    transform: rotateZ(10deg);
+}
+
+#leftLeg-short {
+    color: rgb(242, 242, 242);
+}
+
+#leftCalf-foot {
+    -webkit-transform-origin: top left;
+    transform-origin: top left;
+    
+    -webkit-transform: rotateZ(10deg);
+    transform: rotateZ(10deg);
+}
+
+
+#rightLeg {
+  color: #FFDFC4;
+    -webkit-transform-origin: top top;
+    transform-origin: top top;
+    
+    -webkit-transform: rotateZ(35deg);
+    transform: rotateZ(35deg);
+}
+
+#rightCalf {
+    -webkit-transform-origin: top left;
+    transform-origin: top left;
+    
+    -webkit-transform: rotateZ(70deg);
+    transform: rotateZ(70deg);
+}
+
+#rightLeg-short {
+    color: #fff;
+}
+
+#rightCalf-foot {
+    -webkit-transform-origin: top left;
+    transform-origin: top left;
+    
+    -webkit-transform: rotateZ(30deg);
+    transform: rotateZ(30deg);
+}
+
+/*
+* Upper
+* ----
+*/
+
+#upper{}
+#head{}
+
+#face { fill: #FFDFC4; }
+#hair { -webkit-transform: translate(-1px, -2px); transform: translate(-1px, -2px); fill: #663300; }
+#mouth { fill: #92232C; }
+#head-mouth { 
+    -webkit-transform-origin: center center; 
+    transform-origin: center center;
+    
+    -webkit-transform: scale(1) skewX(-30deg);
+    transform: scale(1) skewX(-30deg);
+}
+
+#neck {
+    stroke: #FFDFC4;
+    stroke-width: 2px;
+    -webkit-transform: translate(10px, 20px);
+    transform: translate(10px, 20px);
+}
+
+#body {
+    -webkit-transform: translate(10px, 25px);
+    transform: translate(10px, 25px);
+}
+
+#body-chest { stroke: #FFDFC4; }
+#body-shirt { stroke: #2CC990; }
+
+/*
+* Chest
+* ----
+*/
+
+#chest { stroke: inherit; stroke-width: 8px; }
+#chest-up { stroke-linecap: round; }
+#chest-down { stroke-linecap: square; }
+
+/*
+* Shirt
+* ----
+*/
+
+#shirt-arm { stroke: currentColor; stroke-width: 8px }
+#shirt-shoulder { stroke-linecap: round; }
+#shirt-sleeve { stroke-linecap: square; }
+
+/*
+* Arms
+* ----
+*/
+
+/* General */
+#humerus { stroke: currentColor; stroke-width: 6px; stroke-linecap: round; }
+#forearm {
+    stroke: currentColor;
+    stroke-width: 6px;
+    stroke-linecap: round;
+    -webkit-transform-origin: bottom;
+    transform-origin: bottom;
+    -webkit-transform: translateY(20px);
+    transform: translateY(20px);
+}
+
+#hand { fill: currentColor; }
+
+/* Specific */
+#rightArm {
+    -webkit-transform: rotateZ(-30deg) translate(3px, 0);
+    transform: rotateZ(-30deg) translate(3px, 0); 
+    
+    -webkit-transform-origin: 3px top; 
+    transform-origin: 3px top;
+}
+
+#rightArm-humerus { color: #FFDFC4; }
+#rightArm-forearm {
+    color: #FFDFC4;
+    
+    -webkit-transform-origin: top;
+    transform-origin: top;
+    
+    -webkit-transform: rotateZ(-90deg);
+    transform: rotateZ(-90deg);
+}
+
+#rightArm-shirt { color: rgb(58, 212, 156); }
+
+#hand {
+    stroke: none;
+    -webkit-transform: scale(0.5) translate(-60%, 20px);
+    transform: scale(0.5) translate(-60%, 20px);
+}
+
+#leftArm {
+    -webkit-transform: rotateZ(60deg) translate(-3px, 0);
+    transform: rotateZ(60deg) translate(-3px, 0); 
+    -webkit-transform-origin: -3px top; 
+    transform-origin: -3px top;
+    color: rgb(255, 219, 189);
+}
+
+#leftArm-forearm {
+    -webkit-transform-origin: top;
+    transform-origin: top;
+    
+    -webkit-transform: rotateZ(-60deg);
+    transform: rotateZ(-60deg);
+}
+
+#leftArm-shirt { color: rgb(39, 180, 128); }

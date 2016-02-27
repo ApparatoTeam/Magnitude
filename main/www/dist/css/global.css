@@ -1,0 +1,47 @@
+html,
+body{
+    overflow: hidden;
+    width: 100%;
+}
+
+/*--
+ - Global Fonts
+ --*/
+.page{
+    font-family: 'noto_sansregular';
+}
+
+/*--
+ - Navbar
+ --*/
+.navbar{
+    height: 50px;
+}
+
+.navbar, 
+.subnavbar,
+.toolbar{
+    background-color: rgba(0,0,0,0.7);
+    background-color: #222;
+}
+
+.navbar .center,
+.subnavbar .center{
+    font-family: 'karnivoreregular';
+    letter-spacing: 5px;
+}
+
+.navbar .right,
+.subnavbar .right{
+    background-color: rgba(255,255,255,0.0);
+}
+
+/*--
+ - Page content
+ --*/
+.page .page-content{
+    position: relative;
+    padding-top: 0 !important;
+    height: calc(100% - 50px);
+    margin-top: 50px;
+}
