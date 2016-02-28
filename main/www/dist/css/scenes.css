@@ -563,7 +563,6 @@ svg.paused #leftCalf-foot{
 }
 
 [data-page].scenes #prep-wrap{
-    display: none;
     
     position: fixed;
     z-index: 700;
@@ -598,8 +597,8 @@ svg.paused #leftCalf-foot{
     width: inherit;
     height: calc(70px * 3);
     
-    -webit-transform: translateY(0px);
-    transform: translateY(0px);
+    -webit-transform: translateY(70px);
+    transform: translateY(70px);
     
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
@@ -619,7 +618,7 @@ svg.paused #leftCalf-foot{
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0,0,0,0.3);
     z-index: 1000;
     
     opacity: 0;
@@ -642,16 +641,28 @@ svg.paused #leftCalf-foot{
     transform: translateY(100%);
 }
 
-[data-page].scenes #egu-header{
-    width: 100px;
+[data-page].scenes #egu-header,
+[data-page].scenes #egu-action{
     display: table-cell;
     vertical-align: middle;
-    padding-left: 10%;
+}
+
+[data-page].scenes #egu-header{
+    width: 100px;
+    padding-left: 15%;
     padding-right: 8%;
     letter-spacing: 0;
-    background-color: rgba(244,67,54,0.5);
+    
     color: white;
     font: 30px/100% 'karnivoreregular';
+}
+
+[data-page].scenes .egu-gameover #egu-header{
+    background-color: rgba(244,67,54,0.5);
+}
+
+[data-page].scenes .egu-completed #egu-header{
+    background-color: #00bcd4;
 }
 
 [data-page].scenes #egu-header > span{
@@ -659,5 +670,39 @@ svg.paused #leftCalf-foot{
 }
 
 [data-page].scenes #egu-header .fa-trophy{
-    margin-right: 5px;
+    color: rgba(0,0,0,0.3);
+    margin-left: 5px;
+}
+
+[data-page].scenes #egu-action .egu-center{
+    display: block;
+    height: 42px;
+    width: 284px;
+    margin: 0 auto;
+}
+
+[data-page].scenes #egu-action button{
+    position: relative;
+    outline: none;
+    border: 0 none;
+    background-color: transparent;
+    color: white;
+    float: right;
+    border: 3px solid #ffeb3b;
+    font: 18px/100% 'noto_sansregular';
+    text-transform: uppercase;
+    margin: 0 5px;
+    font-size: 25px;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+[data-page].scenes #egu-action #egu-action-ingame{
+    background-color: #ffeb3b;
+    color: #222;
+}
+
+[data-page].scenes #egu-action #egu-action-home{
+    color: white;
+    border-color: white;
 }

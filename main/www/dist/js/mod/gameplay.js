@@ -2,7 +2,7 @@ define([], function(){
     
     return window.app.gameplay = window.app.gameplay || {
         
-        time  : (1000 * 3),
+        time  : 60000,
         level : 1,
         lives : 3,
         interval : 5000,
@@ -13,14 +13,19 @@ define([], function(){
             
             self.time = config.time;
             self.level = config.level;
+            self.lives = config.lives;
             self.interval = config.interval;
             
-            self.preparation.init( function(){
-                //self.timer.init();
+            self.preparation.init(function(){
+                
+                self.timer.init(function(){
+                    if( self.lives > 0 )
+                        self.endGame.init( true );
+                 });
                 
                 self.character.init();
                 self.debris.init();
-                self.endGame.init();
+                
              });
             
          },
@@ -37,11 +42,16 @@ define([], function(){
                 self = this;
                 
                 if( !start ){
+                    app.gameplay.topbarDynamic.init();
+                    $('#prep-wrap').hide();
                     self.callback();
                     return;
                  }
                 
                 t = new TimelineMax({
+                    onStart : function(){
+                       app.gameplay.topbarDynamic.init(); 
+                     },
                     onComplete : function(){
                         self.callback();    
                      }
@@ -57,10 +67,11 @@ define([], function(){
                  })
                 .set( prep, {
                     autoAlpha : 0,
-                    y : 0
+                    y : 70
                  })
                 /*- proper -*/
                 .to( prep, 0.2, {
+                    delay : 0.8,
                     autoAlpha : 1,
                     y : 0
                  }, 'three')
@@ -102,8 +113,7 @@ define([], function(){
             iterate : function( self, duration, interval ){
                 self = this;
                 
-                requirejs(['js/lib/moment'], function(moment){
-                    
+                requirejs(['js/lib/moment'], function( moment ){
                     duration = moment.duration( app.gameplay.time, 'milliseconds');
                     interval = 1000;
 
@@ -115,16 +125,16 @@ define([], function(){
                         $('.timer-value').html(
                             moment( duration.asMilliseconds() ).format('mm:ss')
                         );
-                        
+
                         self.out( parseInt(duration._milliseconds / 1000) );
-                        
+
                      }, interval );
-                    
                 });
-                
+                    
              },
             
             out : function( ms ){
+                
                 if( ms == 0 ){
                     window.clearInterval( this.handler );
                     window.setTimeout( this.callback, 500);
@@ -135,10 +145,37 @@ define([], function(){
             
          }, /*-- timer --*/
         
-        endGame : {
+        topbarDynamic : {
             
+            init : function(){
+                this.level();
+                this.lives( false );
+             },
+            
+            level : function(){
+                $('#level-value').html( app.gameplay.level );
+             },
+            
+            lives : function( updater ){
+                if( updater ){
+                    
+                    if( app.gameplay.lives > 0 ){
+                        app.gameplay.lives = app.gameplay.lives - 1;
+                        app.gameplay.topbarDynamic.lives( false );
+                     }
+                    
+                    if( app.gameplay.lives == 0 )
+                        app.gameplay.endGame.init( false );
+                 }else{
+                     $('.lives-value').html( app.gameplay.lives );
+                  }
+             }
+         },
+        
+        endGame : {
             result : false,
             callback : null,
+            
             init : function( result, callback ){
                 this.result = result;
                 this.callback = callback;
@@ -150,8 +187,11 @@ define([], function(){
                 self = this;
                 
                 (new TimelineMax({
+                    onStart : function(){
+                        self.action.prop();
+                     },
                     onComplete : function(){
-                        return ( self.result ) ? self.completed() : self.gameOver();    
+                        self.action.redirect();
                      }
                  }))
                 .set( '#end-game-ui', {
@@ -166,16 +206,44 @@ define([], function(){
                 .to( '#egu-slider', 0.8, {
                     y : '0%',
                     ease : Elastic.easeInOut
-                 })
+                 });
                 
              },
             
-            completed : function(){
+            action : {
+                prop : function( self, config ){
+                    self = this;
+                    config = {
+                        theme : ( app.gameplay.endGame.result ) ? 'egu-completed' : 'egu-gameover',
+                        header : ( app.gameplay.endGame.result ) ? '<span>level<i class="fa fa-trophy"></i></span> <span>passed</span>' : '<span>game</span> <span>over</span>',
+                        action : ( app.gameplay.endGame.result ) ? 'next&nbsp;<i class="fa fa-fw fa-play"></i>' : 'retry&nbsp;<i class="fa fa-fw fa-refresh"></i>'
+                     };
+
+                    window.clearInterval( app.gameplay.intervalHandler );
+                    window.clearInterval( app.gameplay.timer.handler );
+                    
+                    $('#end-game-ui').removeAttr('class').addClass( config.theme );
+                    $('#egu-header').html( config.header );
+                    $('#egu-action-ingame').html( config.action );
+                 },
                 
-             },
-            
-            gameOver : function(){
-                
+                redirect : function(){
+                    
+                    $('#egu-action-ingame')
+                    .on('click', function(){
+                        
+                        if( app.gameplay.endGame.result ){
+                            console.log('Going to next');
+                         }else{
+                            console.log('Retrying level 1');
+                          }
+                        
+                        $(this).off('click');
+                        
+                        return false;
+                     });
+                    
+                 }
              }
             
          }, /*-- endGame --*/
@@ -308,7 +376,9 @@ define([], function(){
                     self = this;
                     
                     $('#character-wrap').on('click', function(){
-                        alert( $(this).offset().left) ;
+                        
+                        app.gameplay.topbarDynamic.lives( true );
+                        
                         // navigator.app.exitApp();
                      });
                     

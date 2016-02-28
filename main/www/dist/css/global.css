@@ -45,3 +45,10 @@ body{
     height: calc(100% - 50px);
     margin-top: 50px;
 }
+
+/*--
+ - Button active state
+ --*/
+button.active-state{
+    -webkit-user-select: none;
+}

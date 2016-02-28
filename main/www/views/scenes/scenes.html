@@ -1,14 +1,17 @@
 <div data-page="scenes" class="scenes page navbar-fixed toolbar-fixed">
     
-    <div id="end-game-ui">
+    <div id="end-game-ui" class="egu-completed">
         <div id="egu-slider">
             
             <header id="egu-header">
-                <span><i class="fa fa-trophy"></i>level</span>
+                <span>level<i class="fa fa-trophy"></i></span>
                 <span>passed</span>
             </header>
-            <aside>
-                
+            <aside id="egu-action">
+                <div class="egu-center">
+                    <button class="ripple ripple-yellow" id="egu-action-ingame">next&nbsp;<i class="fa fa-fw fa-play"></i></button>
+                    <button class="ripple ripple-white" id="egu-action-home">quit&nbsp;<i class="fa fa-fw fa-power-off"></i></button>
+                </div>
             </aside>
             
         </div>
@@ -25,7 +28,7 @@
             <div class="center">
                 <section id="timer-wrap">
                     <div class="timer-icon"></div>
-                    <div class="timer-value">00:00</div>
+                    <div class="timer-value">01:00</div>
                 </section>
                 
                 <section id="lives-wrap">
@@ -73,7 +76,6 @@
                     <section>3</section>
                     <section>2</section>
                     <section>1</section>
-                    <section>run!</section>
                 </div>
             </div>
         </div><!--/#prep-wrap-->

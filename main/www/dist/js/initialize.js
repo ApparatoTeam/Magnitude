@@ -48,9 +48,10 @@ define(function(require){
                 
                 requirejs(['js/mod/gameplay'], function(obj){
                     obj.initialize({
-                        time  : 10000,
+                        time  : 3000,
                         level : 1,
-                        interval : 5000
+                        lives : 3,
+                        interval : 10000
                      });
                  });
                 
