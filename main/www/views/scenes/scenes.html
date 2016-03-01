@@ -10,7 +10,7 @@
             <aside id="egu-action">
                 <div class="egu-center">
                     <button class="ripple ripple-yellow" id="egu-action-ingame">next&nbsp;<i class="fa fa-fw fa-play"></i></button>
-                    <button class="ripple ripple-white" id="egu-action-home">quit&nbsp;<i class="fa fa-fw fa-power-off"></i></button>
+                    <button class="ripple ripple-white" id="egu-action-home"><i class="fa fa-fw fa-power-off"></i></button>
                 </div>
             </aside>
             
@@ -38,8 +38,8 @@
             </div>
             
             <div class="right">
-                <a href="#" class="link" id="pause-game" data-panel="right">
-                    <i class="fa fa-fw fa-flag"></i>
+                <a href="#" class="link" id="ingame-quit-trigger">
+                    <i class="fa fa-fw fa-power-off"></i>
                 </a>
             </div>
         </div>
@@ -62,8 +62,8 @@
         <div id="debris-wrap"> </div><!--/#debris-wrap-->
         
         <div id="game-controller-wrap">
-            <nav id="move-left" class="move-key"></nav>
-            <nav id="move-right" class="move-key"></nav>
+            <nav id="move-left" class="move-key ripple ripple-yellow"></nav>
+            <nav id="move-right" class="move-key ripple ripple-yellow"></nav>
         </div><!--/#game-controller-wrap-->
         
         <div id="character-wrap">
@@ -79,6 +79,11 @@
                 </div>
             </div>
         </div><!--/#prep-wrap-->
+        
+        <div id="ingame-quit">
+            <button class="ingame-quit-button" id="ingame-quit-yes"><i class="fa fa-fw fa-check"></i></button>
+            <button class="ingame-quit-button" id="ingame-quit-no"><i class="fa fa-fw fa-times"></i></button>
+        </div><!--/#ingame-quit-->
         
     </div><!--/.page-content-->
     

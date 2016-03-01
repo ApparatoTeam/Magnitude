@@ -1,5 +1,5 @@
 [data-page].scenes{
-    background: url(../img/assets/startup-bg.svg) no-repeat 50% 50% / 100% auto;
+    background: url(../img/scenes/scene-1.svg) no-repeat 30% 50% / auto 100%;
 }
 
 [data-page].scenes .navbar .left{
@@ -559,7 +559,8 @@ svg.paused #leftCalf-foot{
  - Preparatory
  --*/
 [data-page].scenes .navbar .navbar-inner{
-    
+    opacity: 0;
+    visibility: hidden;
 }
 
 [data-page].scenes #prep-wrap{
@@ -677,7 +678,7 @@ svg.paused #leftCalf-foot{
 [data-page].scenes #egu-action .egu-center{
     display: block;
     height: 42px;
-    width: 284px;
+    width: 222px;
     margin: 0 auto;
 }
 
@@ -689,7 +690,7 @@ svg.paused #leftCalf-foot{
     color: white;
     float: right;
     border: 3px solid #ffeb3b;
-    font: 18px/100% 'noto_sansregular';
+    font: 18px/100% 'noto_sansbold';
     text-transform: uppercase;
     margin: 0 5px;
     font-size: 25px;
@@ -705,4 +706,74 @@ svg.paused #leftCalf-foot{
 [data-page].scenes #egu-action #egu-action-home{
     color: white;
     border-color: white;
+}
+
+/*--
+ - In-game quit
+ --*/
+[data-page].scenes #ingame-quit{
+    position: fixed;
+    top: calc(50px - 3px);
+    right: -3px;
+    z-index: 800;
+    border: 3px solid;
+    background-color: transparent;
+    
+    opacity: 0;
+    visibility: hidden;
+    
+    -webkit-transform: translateX(100%);
+    transform: translateX(100%);
+}
+
+[data-page].scenes #ingame-quit .ingame-quit-button{
+    display: block;
+    float: left;
+    
+    outline: none;
+    border: 0 none;
+    
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+    
+    background-color: rgba(0,0,0,0.7);
+}
+
+[data-page].scenes #ingame-quit-yes{
+    color: #FFEB3B;
+}
+
+[data-page].scenes #ingame-quit-no{
+    color: white;
+}
+
+/*--
+ - Router interface
+ --*/
+[data-page="router"]{
+    background: url(../img/assets/end-game-bg.png) no-repeat 0% 0% / 100% auto;
+}
+
+[data-page="router"] ._center{
+    width: 100%;
+    height: 100%;
+    
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    
+    margin: auto;
+}
+
+[data-page="router"] header{
+    text-align: center;
+    font: 20px/100% 'karnivoreregular';
+    color: white;
+}
+
+[data-page="router"] header span{
+    display: inline-block;
+    vertical-align: middle;
 }

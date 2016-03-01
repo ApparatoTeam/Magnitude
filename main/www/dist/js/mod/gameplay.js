@@ -2,7 +2,7 @@ define([], function(){
     
     return window.app.gameplay = window.app.gameplay || {
         
-        time  : 60000,
+        time  : 60 * 1000,
         level : 1,
         lives : 3,
         interval : 5000,
@@ -11,7 +11,7 @@ define([], function(){
         initialize : function( config, self ){
             self = this;
             
-            self.time = config.time;
+            self.time = 60 * 1000;
             self.level = config.level;
             self.lives = config.lives;
             self.interval = config.interval;
@@ -23,6 +23,8 @@ define([], function(){
                         self.endGame.init( true );
                  });
                 
+                self.backButton();
+                self.inGameQuit.init();
                 self.character.init();
                 self.debris.init();
                 
@@ -30,12 +32,28 @@ define([], function(){
             
          },
         
+        removeConfigurators : {
+            init : function(){
+                this.set();
+             },
+            
+            set : function( configs ){
+                configs = ['normalize','optimize'];
+                
+                (['normalize','optimize']).forEach(function(x, y){
+                    if( require.defined('js/mod/level-config/'+y ) ){
+                        
+                     }
+                 });
+             }
+         },
+        
         preparation : {
             callback : null,
             
             init : function( callback ){
                 this.callback = callback;
-                this.animate( false );
+                this.animate( true );
              },
             
             animate : function( start, self, t, navbar, prep ){
@@ -44,6 +62,11 @@ define([], function(){
                 if( !start ){
                     app.gameplay.topbarDynamic.init();
                     $('#prep-wrap').hide();
+                    
+                    TweenLite.set('.navbar-inner', {
+                        autoAlpha : 1    
+                     });
+                    
                     self.callback();
                     return;
                  }
@@ -64,6 +87,9 @@ define([], function(){
                 /*- defaults -*/
                 .set( navbar, {
                     autoAlpha : 0
+                 })
+                .set( '#prep-wrap', {
+                    display : 'block'
                  })
                 .set( prep, {
                     autoAlpha : 0,
@@ -176,6 +202,12 @@ define([], function(){
             result : false,
             callback : null,
             
+            clearTimers : function(){
+                //--* window.clearTimeout( app.gameplay.inGameQuit.timeoutHandler );
+                window.clearInterval( app.gameplay.intervalHandler );
+                window.clearInterval( app.gameplay.timer.handler );
+             },
+            
             init : function( result, callback ){
                 this.result = result;
                 this.callback = callback;
@@ -211,6 +243,7 @@ define([], function(){
              },
             
             action : {
+                
                 prop : function( self, config ){
                     self = this;
                     config = {
@@ -218,25 +251,60 @@ define([], function(){
                         header : ( app.gameplay.endGame.result ) ? '<span>level<i class="fa fa-trophy"></i></span> <span>passed</span>' : '<span>game</span> <span>over</span>',
                         action : ( app.gameplay.endGame.result ) ? 'next&nbsp;<i class="fa fa-fw fa-play"></i>' : 'retry&nbsp;<i class="fa fa-fw fa-refresh"></i>'
                      };
-
-                    window.clearInterval( app.gameplay.intervalHandler );
-                    window.clearInterval( app.gameplay.timer.handler );
+                    
+                    app.gameplay.endGame.clearTimers();
                     
                     $('#end-game-ui').removeAttr('class').addClass( config.theme );
                     $('#egu-header').html( config.header );
                     $('#egu-action-ingame').html( config.action );
                  },
                 
-                redirect : function(){
+                redirect : function( mode ){
+                    mode = {
+                        url : {
+                            dom : 'views/scenes/router.html',
+                            script : 'js/mod/level-config/'
+                         },
+                        config : {
+                            level : app.gameplay.level,
+                            lives : app.gameplay.lives,
+                            interval : app.gameplay.interval
+                         }
+                     };
+                    
+                    $('#egu-action-home')
+                    .on('click', function(){
+                        app.gameplay.indexRouting();
+                        
+                        return false;
+                     });
                     
                     $('#egu-action-ingame')
                     .on('click', function(){
                         
                         if( app.gameplay.endGame.result ){
-                            console.log('Going to next');
+                            mode.url.script = mode.url.script + 'optimize';
+                            mode.config = {
+                                level : app.gameplay.level,
+                                lives : app.gameplay.lives,
+                                interval : app.gameplay.interval
+                             };
                          }else{
-                            console.log('Retrying level 1');
+                            mode.url.script = mode.url.script + 'normalize';
+                            mode.config = {
+                                level : 1,
+                                lives : 3,
+                                interval : 10 * 1000
+                             };
                           }
+                        
+                        (app.f7.view).router.load({
+                            url : mode.url.dom
+                         });
+
+                        requirejs([mode.url.script], function(obj){
+                            obj.initialize( mode.config );
+                         });
                         
                         $(this).off('click');
                         
@@ -244,9 +312,82 @@ define([], function(){
                      });
                     
                  }
-             }
+             },
             
          }, /*-- endGame --*/
+        
+        indexRouting : function(){
+            app.gameplay.endGame.clearTimers();
+
+            (app.f7.view).router.load({
+                url : 'index.html'
+             });
+
+            requirejs(['js/initialize'], function(obj){
+                obj.initialize();
+             });
+         },
+        
+        inGameQuit : {
+            timeoutHandler : null,
+            timeline : new TimelineLite(),
+            status : false,
+            
+            init : function(){
+                this.animate();
+             },
+            
+            animate : function( self, trigger ){
+                self = this;
+                trigger = $('#ingame-quit-trigger');
+                
+                this.timeline
+                .to( '#ingame-quit', 0.3, {
+                    autoAlpha : 1,
+                    x : '0%'
+                 })
+                .pause()
+                ;
+                
+                trigger.on('click', function(){
+                    if( status ){
+                        self.timeline.reverse();
+                        self.status = false;
+                     }else{
+                        self.timeline.play();
+                        self.status = true;
+                        /*
+                        self.timeoutHandler = window.setTimeout(function(){
+                            self.timeline.reverse();
+                            self.status = false;
+                         }, 3000);
+                        */
+                        self.action();
+                      }
+                    
+                    return false;
+                 });
+                
+                return;
+             },
+            
+            action : function( self ){
+                self = this;
+                
+                $('#ingame-quit-no').on('click', function(){
+                    self.timeline.reverse();
+                    self.status = false;
+                 });
+                
+                $('#ingame-quit-yes').on('click', function(){
+                    app.gameplay.indexRouting();
+
+                    $(this).off('click');
+                 });
+                
+             }
+            
+         }, /*-- inGameQuit --*/
         
         debris : {
             
@@ -256,7 +397,7 @@ define([], function(){
             
             randomize : {
                 debrisPosition : function( min, max ){
-                    min = 1;
+                    min = 0;
                     max = app.gameplay.character.steps;
                     return Math.floor(Math.random() * (max - min + 1)) + min;
                  },
@@ -282,7 +423,7 @@ define([], function(){
             
             collision : {
                 timeout : 0,
-                detection : function( debris, character ){
+                detection : function( debris, character, hit ){
                     var cc_debris = {
                             radius : (debris.innerWidth() / 2),
                             x : debris.offset().left + (debris.innerWidth() / 2),
@@ -299,8 +440,17 @@ define([], function(){
                     ,   distance = Math.sqrt(dx * dx + dy * dy)
                     ;
 
-                    if (distance <= cc_debris.radius + cc_character.radius) {
+                    if ( distance < cc_debris.radius + cc_character.radius ) {
                         app.gameplay.character.animate.strucked();
+                        
+                        /*-
+                        hit = parseInt( debris.data('hit') );
+                        if( hit <= 1 ){
+                            app.gameplay.character.animate.strucked();
+                            app.gameplay.topbarDynamic.lives( true );
+                         }
+                        hit = hit + 1;
+                        -*/
                      }
                     
                  }
@@ -310,12 +460,10 @@ define([], function(){
                 self = this;
                 container = $('#debris-wrap');
                 
-                // console.log( $(window).innerWidth() / app.gameplay.character.steps );
-                
-                app.gameplay.intervalHandler = setInterval( function(){
+                function iterate(){
                     dom = '';
-                    for(var d = 0; d < (app.gameplay.level + 2); d+=1 ){
-                        dom += '<div ';
+                    for(var d = 0; d < (app.gameplay.level + 1); d+=1 ){
+                        dom += '<div data-hit="0"';
                         dom += 'class="debris" style="'; 
                         dom += 'background-image: url(dist/img/scenes/debris/'+ self.randomize.debrisBackground() +'.png); ';
                         dom += 'width: '+($(window).innerWidth() / app.gameplay.character.steps)+'px; ';
@@ -341,10 +489,13 @@ define([], function(){
                              }
                          }, 0);
                      });
-                  
-                 }, app.gameplay.interval );
+                 }
                 
-                window.clearInterval( app.gameplay.intervalHandler );
+                iterate();
+                
+                app.gameplay.intervalHandler = setInterval( iterate, app.gameplay.interval );
+                
+                // window.clearInterval( app.gameplay.intervalHandler );
                 
                 return this;
              }
@@ -355,6 +506,20 @@ define([], function(){
         background : {
             
          }, /*-- background --*/
+        
+        backButton : function(){
+            
+            document.addEventListener('backbutton', function(){
+            
+                if( (app.f7.view.activePage.name).match(/scenes/) ){
+                    app.gameplay.indexRouting();
+                 }else if( (app.f7.view.activePage.name).match(/index/) ){
+                    navigator.app.exitApp();
+                  }
+                
+             });
+            
+         }, /*-- backButton --*/
         
         character : {
             
@@ -376,17 +541,7 @@ define([], function(){
                     self = this;
                     
                     $('#character-wrap').on('click', function(){
-                        
                         app.gameplay.topbarDynamic.lives( true );
-                        
-                        // navigator.app.exitApp();
-                     });
-                    
-                    document.addEventListener('backbutton', function(){
-                        (app.core.framework7.view).router.load({
-                            url : 'index.html',
-                            animatePages : true
-                         });
                      });
                     
                     $('.move-key')
@@ -467,7 +622,7 @@ define([], function(){
                     ( new TimelineMax({
                         repeat : 3,
                         onComplete : function(){
-                            console.log('flash round...');
+                            
                          }
                      }) )
                     /*- flash character-*/
@@ -490,7 +645,7 @@ define([], function(){
                 controlTap : function(target){
                     ( new TimelineLite )
                     .to(target, 0.2, {
-                        backgroundColor : 'rgba(203, 36, 36, 0.66)'
+                        backgroundColor : 'rgba(255, 235, 59, 0.5)'
                      })
                     .to(target, 0.2, {
                         backgroundColor : 'rgba(0, 0, 0, 0.3)'

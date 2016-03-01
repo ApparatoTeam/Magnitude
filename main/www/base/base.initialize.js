@@ -11,6 +11,6 @@ require.config({
      }
 });
 
-requirejs(['dist/js/initialize.js'], function( mod ){
+requirejs(['dist/js/f7.js'], function( mod ){
     mod.initialize();
 });
