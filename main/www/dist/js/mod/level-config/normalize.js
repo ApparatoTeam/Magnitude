@@ -5,8 +5,11 @@ define([], function(){
         config : {
             level : 1,
             lives  : 3,
-            time : 60 * 1000,
-            interval : 6 * 1000
+            time : 1 * 30000,
+            interval : 7 * 1000,
+            scene : 3,
+            tilt : 1.0,
+            _debris : 1
          },
         
         initialize : function( ref ){
@@ -20,6 +23,9 @@ define([], function(){
             this.config.lives = param.lives || this.config.lives;
             this.config.time = param.time || this.config.time;
             this.config.interval = param.interval || this.config.interval;
+            this.config.scene = param.scene || this.config.scene;
+            this.config.tilt = param.tilt || this.config.tilt;
+            this.config._debris = param._debris || this.config._debris;
             
             /*- neutralize -*/
             require.undef('js/initialize');

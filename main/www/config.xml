@@ -1,7 +1,7 @@
-<widget xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" id="net.apparato.mobile" version="1.0.0">
+<widget xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" id="net.apparato.mobile" version="2.1.1">
     
-    <name>Magnitude | Game</name>
-    <description>Earthquake survival learning game.</description>
+    <name>Magnitude</name>
+    <description>Earthquake survival | 2D Game</description>
     <author href="http://apparato.net" email="renato@apparato.net">Apparato IT Network</author>
 
     <content src="index.html"/>

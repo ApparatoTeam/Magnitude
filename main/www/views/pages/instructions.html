@@ -1,20 +1,65 @@
 <div data-page="instructions" class="page navbar-fixed toolbar-fixed">
-
+    
+    <div class="toolbar tabbar toolbar-bottom">
+        <div class="toolbar-inner">
+            <a href="#tab1" class="tab-link active button-sfx">
+                <i class="fa fa-fw fa-gamepad"></i>
+            </a>
+            <a href="#tab2" class="tab-link button-sfx">
+                <i class="fa fa-fw fa-clock-o"></i>
+            </a>
+            <a href="#tab3" class="tab-link button-sfx">
+                <i class="fa fa-fw fa-heartbeat"></i>
+            </a>
+            <a href="#tab4" class="tab-link button-sfx">
+                <i class="fa fa-fw fa-bolt"></i>
+            </a>
+        </div>
+    </div>
+    
     <div class="navbar">
         <div class="navbar-inner">
             <div class="center">
-                <i class="fa fa-fw fa-question-circle"></i>&nbsp;Instructions
+                instructions
             </div>
             <div class="right">
-                <a href="#" class="back link" data-target-view="index-1">
-                    <i class="fa fa-fw fa-home"></i>
+                <a href="#" class="back link button-sfx" data-target-view="index-1">
+                    <i class="fa fa-fw fa-arrow-right"></i>
                 </a>
             </div>
         </div>
     </div>
+    
+    <div class="tabs-swipeable-wrap">
+        <div class="tabs">
 
-    <div class="page-content">
-        <p>Content goes here</p>
+            <div class="tab active" id="tab1">
+                <section>
+                    Move the character through these controls accordingly 
+                    <img src="dist/img/scenes/run-left.png">&nbsp;
+                    <img src="dist/img/scenes/run-right.png">
+                </section>
+            </div>
+
+            <div class="tab" id="tab2">
+                <section>
+                    Outrun and survive every falling objects for one minute (1) without being hit by them or their ripple indicator respectively.
+                </section>
+            </div>
+
+            <div class="tab" id="tab3">
+                <section>
+                    All throughout the game instance, your character are given three (3) lives to progress level through level. Once consumed on, game would be over.
+                </section>
+            </div>
+
+            <div class="tab" id="tab4">
+                <section>
+                    Levels that you have overcame are beyond compare from those following levels. Survive.
+                </section>
+            </div>
+
+        </div><!--/.tabs-->
     </div>
 
 </div>

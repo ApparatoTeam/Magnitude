@@ -1,4 +1,13 @@
-<div data-page="scenes" class="scenes page navbar-fixed toolbar-fixed">
+<div class="audio">
+    <audio preload="none" id="audio-button">
+        <source src="dist/audio/buttons.mp3" type="audio/mp3">
+    </audio>
+    <audio preload="none" id="audio-bg">
+        <source src="dist/audio/earthquake.mp3" type="audio/mp3">
+    </audio>
+</div>
+
+<div data-page="scenes" class="scenes scene-afternoon page navbar-fixed toolbar-fixed">
     
     <div id="end-game-ui" class="egu-completed">
         <div id="egu-slider">
@@ -9,8 +18,8 @@
             </header>
             <aside id="egu-action">
                 <div class="egu-center">
-                    <button class="ripple ripple-yellow" id="egu-action-ingame">next&nbsp;<i class="fa fa-fw fa-play"></i></button>
-                    <button class="ripple ripple-white" id="egu-action-home"><i class="fa fa-fw fa-power-off"></i></button>
+                    <button class="ripple ripple-yellow button-sfx" id="egu-action-ingame">next&nbsp;<i class="fa fa-fw fa-play"></i></button>
+                    <button class="ripple ripple-white button-sfx" id="egu-action-home"><i class="fa fa-fw fa-power-off"></i></button>
                 </div>
             </aside>
             
@@ -28,7 +37,7 @@
             <div class="center">
                 <section id="timer-wrap">
                     <div class="timer-icon"></div>
-                    <div class="timer-value">01:00</div>
+                    <div class="timer-value">00:00</div>
                 </section>
                 
                 <section id="lives-wrap">
@@ -38,7 +47,7 @@
             </div>
             
             <div class="right">
-                <a href="#" class="link" id="ingame-quit-trigger">
+                <a href="#" class="link button-sfx" id="ingame-quit-trigger">
                     <i class="fa fa-fw fa-power-off"></i>
                 </a>
             </div>
@@ -47,6 +56,15 @@
 
     <div class="page-content">
         
+        <div id="background-wrap">
+            <div id="background-inner">
+                <img class="background">
+                <img class="background">
+                <img class="background">
+            </div>
+        </div><!--/#background-wrap-->
+        
+        <!--
         <div id="grid-wrap">
             <div class="grid"></div>
             <div class="grid"></div>
@@ -58,7 +76,8 @@
             <div class="grid"></div>
             <div class="grid"></div>
         </div>
-        
+        -->
+
         <div id="debris-wrap"> </div><!--/#debris-wrap-->
         
         <div id="game-controller-wrap">
@@ -71,13 +90,15 @@
         </div><!--/#character-->
         
         <div id="prep-wrap">
+            <!--
             <div class="prep-mask">
                 <div class="prep-roller">
-                    <section>3</section>
-                    <section>2</section>
-                    <section>1</section>
+                    <section></section>
+                    <section></section>
+                    <section></section>
                 </div>
             </div>
+            -->
         </div><!--/#prep-wrap-->
         
         <div id="ingame-quit">

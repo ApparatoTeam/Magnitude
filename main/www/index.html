@@ -4,57 +4,53 @@
         <meta charset="utf-8" />
         <meta name="format-detection" content="telephone=no" />
         <meta name="msapplication-tap-highlight" content="no" />
-        <meta name="viewport" content="width=540, minimum-scale=1.0, maximum-scale=10.0, user-scalable=0">
+        <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=10.0, user-scalable=0">
         <link rel="stylesheet" type="text/css" href="base/base.initialize.css" />
         <title>Magnitude</title>
     </head>
     <body>
-
-        <div class="statusbar-overlay"></div>
-        <div class="panel-overlay"></div>
-        <div class="panel panel-right">
-            <section>Paused</section>
+        <div class="audio">
+            <audio preload="none" id="audio-button">
+                <source src="dist/audio/buttons.mp3" type="audio/mp3">
+            </audio>
         </div>
         
+        <div class="statusbar-overlay"></div>
+        <div class="panel-overlay"></div>
+        
         <div class="views">
-            
             <div class="view view-main">
-                
                 <div class="pages">
                     
                     <div data-page="index" class="page navbar-fixed toolbar-fixed">
 
                         <div class="page-content">
                             
-                            <div class="inner">
-                                <header id="header">
-                                    magnitude
-                                </header>
-
-                                <nav id="menu">
-                                    <a class="link" id="menu-link-instructions" href="views/pages/instructions.html">
-                                        <i class="fa fa-fw fa-question-circle"></i>
-                                    </a>
-
-                                    <a class="link" id="menu-link-scene">
-                                        <i class="fa fa-fw fa-play-circle"></i>
-                                    </a>
-
-                                    <a class="link" id="menu-link-settings" href="views/pages/settings.html">
-                                        <i class="fa fa-fw fa-cog"></i>
-                                    </a>
-                                </nav>
-                            </div>
+                            <nav id="menu">
+                                <a class="ripple ripple-white" data-menu-alias="start" id="menu-link-scene"></a>
+                                <a class="ripple ripple-white" data-menu-alias="fun-facts" id="menu-link-fun-facts" href="views/pages/fun-facts.html"></a>
+                                <a class="ripple ripple-white" data-menu-alias="instructions" id="menu-link-instructions" href="views/pages/instructions.html"></a>
+                                <a class="ripple ripple-white" data-menu-alias="exit" id="menu-link-exit"></a>
+                            </nav><!--/#menu-->
                             
-                        </div>
+                            <a class="ripple ripple-white" data-menu-alias="settings" id="menu-link">
+                                <i class="fa fa-fw fa-volume-up"></i>
+                            </a>
+                            
+                            <div id="progressbar-wrap">
+                                <span class="progressbar-infinite color-yellow" data-progress="50">
+                                    <span></span>
+                                </span>
+                                <header>Loading magnitude</header>
+                            </div><!--/#progressbar-wrap-->
+                            
+                        </div><!--/.page-content-->
 
-                    </div>
+                    </div><!--/[data-page=index]-->
                     
-                </div>
-                
-            </div>
-            
-        </div>
+                </div><!--/.pages-->
+            </div><!--/.view-->
+        </div><!--/.views-->
         
         <script src="cordova.js"></script>
         <script data-main="base/base.initialize" src="base/require.js"></script>

@@ -2,12 +2,11 @@
  - Background image
  --*/
 [data-page="index"]{
-    background: url(../img/assets/startup-bg.svg) no-repeat center top;
+    background: url(../img/assets/home-bg.png) no-repeat center top;
     background-size: 100%;
 }
 
 [data-page="index"]::after{
-    content: '';
     position: absolute;
     width: 100%;
     height: 100%;
@@ -20,6 +19,7 @@
 [data-page="index"] .page-content{
     margin-top: 0;
     height: 100%;
+    box-shadow: inset 0 10px 27px #222;
 }
 
 [data-page="index"] .page-content .inner{
@@ -32,59 +32,115 @@
 }
 
 /*--
- - Header
- --*/
-[data-page="index"] header#header,
-[data-page="index"] nav#menu{
-    position: relative;
-}
-
-[data-page="index"] header#header{
-    font: 40px/100% 'karnivoreregular';
-    color: white;
-    text-shadow: 0 3px 10px black;
-    text-align: center;
-    letter-spacing: 10px;
-    margin-bottom: 3%;
-}
-
-[data-page="index"] header#header > span{
-    display: inline-block;
-    opacity: 0;
-    -webkit-visibility: hidden;
-    visibility: hidden;
-}
-
-/*--
  - Menu
  --*/
 [data-page="index"] nav#menu{
+    position: fixed;
+    width: 150px;
+    bottom: 10px;
+    left: 50%;
+    
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
+
+[data-page="index"] nav#menu a.ripple{
+    position: relative;
     width: 100%;
-    display: table;
-    margin-top: 3%;
-}
-
-[data-page="index"] nav#menu a.link{
-    display: table-cell;
-    color: white;
-    text-align: center;
-    vertical-align: middle;
-}
-
-[data-page="index"] nav#menu a.link:not(#menu-link-scene){
-    width: 30%;
-}
-
-[data-page="index"] nav#menu a.link#menu-link-scene{
-    width: 40%;
-}
-
-[data-page="index"] nav#menu a.link .fa{
-    width: 100%;
+    height: 45px;
     display: block;
-    font-size: 35px;
+    
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 100%;
 }
 
-[data-page="index"] nav#menu a.link#menu-link-scene .fa{
-    font-size: 60px;
+[data-page="index"] nav#menu a[data-menu-alias="start"]{
+    background-image: url(../img/assets/buttons/start.png);
+}
+
+[data-page="index"] nav#menu a[data-menu-alias="fun-facts"]{
+    background-image: url(../img/assets/buttons/fun-facts.png);
+}
+
+[data-page="index"] nav#menu a[data-menu-alias="instructions"]{
+    background-image: url(../img/assets/buttons/instructions.png);
+}
+
+[data-page="index"] nav#menu a[data-menu-alias="exit"]{
+    background-image: url(../img/assets/buttons/exit.png);
+}
+
+/*--
+ - Settings
+ --*/
+[data-page="index"] a[data-menu-alias="settings"]{
+    position: fixed;
+    top: 0;
+    right: 0;
+    color: white;
+    font-size: 30px;
+    text-shadow: 0 2px 8px black;
+}
+
+.modal .list-block{
+    margin: 0;
+}
+
+/*--
+ - Progress bar
+ --*/
+[data-page="index"] #progressbar-wrap{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.8);
+}
+
+.progressbar-infinite.bg-yellow:after,
+.progressbar-infinite.bg-yellow:before,
+.progressbar-infinite.color-yellow:after,
+.progressbar-infinite.color-yellow:before,
+.progressbar-infinite.theme-yellow:after,
+.progressbar-infinite.theme-yellow:before,
+.theme-yellow .progressbar-infinite:after,
+.theme-yellow .progressbar-infinite:before{
+    background-color: #FFC107;
+}
+
+.progressbar-infinite.bg-yellow,
+.progressbar-infinite.color-yellow,
+.progressbar-infinite.theme-yellow,
+.theme-yellow .progressbar-infinite{
+    background-color: rgba(255,193,7,.5);
+}
+
+[data-page="index"] #progressbar-wrap header{
+    height: calc(100% - 0px);
+    color: white;
+    
+    font: 30px/100% 'karnivoreregular';
+
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    
+    -webkit-justify-content: center;
+    justify-content: center;
+    
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    
+    -webkit-align-items: center;
+    align-items: center;
+}
+
+.notifications.list-block > ul{
+    max-width: none;
 }

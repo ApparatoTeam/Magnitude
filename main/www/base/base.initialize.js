@@ -7,7 +7,8 @@ require.config({
         jQuery : 'js/lib/jquery-2.1.4.min',
         lettering : 'js/lib/require.lettering',
         f7 : 'js/lib/framework7.min',
-        GSAP   : 'js/lib/TweenMax.min'
+        GSAP   : 'js/lib/TweenMax.min',
+        howler   : 'js/lib/howler.min'
      }
 });
 
