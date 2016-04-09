@@ -16,8 +16,9 @@
 
 var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 
-function preload() {
-
+function preload() {    
+    game.load.tilemap('magnitude', 'assets/tile.json', null, Phaser.Tilemap.TILED_JSON);
+    game.load.image('tiles','assets/super_mario.png');
     game.load.image('sky', 'assets/sky.png');
     game.load.image('ground', 'assets/platform.png');
     game.load.image('star', 'assets/star.png');
@@ -32,11 +33,29 @@ var cursors;
 var stars;
 var score = 0;
 var scoreText;
+var velocity = 100;
+var downvelocity = 400;
 
-function create() {
-
+function create(){
     //  We're going to be using physics, so enable the Arcade Physics system
     game.physics.startSystem(Phaser.Physics.ARCADE);
+
+
+    map = game.add.tilemap('magnitude');
+    map.addTilesetImage('SuperMarioBros-World1-1', 'tiles');
+
+    //  14 = ? block
+     map.setCollisionBetween(14, 15);
+
+    map.setCollisionBetween(15, 16);
+    map.setCollisionBetween(20, 25);
+    map.setCollisionBetween(27, 29);
+    map.setCollision(40);
+    
+    layer = map.createLayer('World1');
+    layer.debug = true;
+    layer.resizeWorld();
+
 
     //  A simple background for our game
     game.add.sprite(0, 0, 'sky');
@@ -57,11 +76,11 @@ function create() {
     ground.body.immovable = true;
 
     //  Now let's create two ledges
-    var ledge = platforms.create(400, 400, 'ground');
-    ledge.body.immovable = true;
+    // var ledge = platforms.create(400, 400, 'ground');
+    // ledge.body.immovable = true;
 
-    ledge = platforms.create(-150, 250, 'ground');
-    ledge.body.immovable = true;
+    // ledge = platforms.create(-150, 250, 'ground');
+    // ledge.body.immovable = true;
 
     // The player and its settings
     player = game.add.sprite(32, game.world.height - 150, 'dude');
@@ -70,8 +89,8 @@ function create() {
     game.physics.arcade.enable(player);
 
     //  Player physics properties. Give the little guy a slight bounce.
-    player.body.bounce.y = 0.2;
-    player.body.gravity.y = 300;
+    player.body.bounce.y = 0.1;
+    player.body.gravity.y = 800;
     player.body.collideWorldBounds = true;
 
     //  Our two animations, walking left and right.
@@ -91,18 +110,16 @@ function create() {
         var star = stars.create(i * 70, 0, 'star');
 
         //  Let gravity do its thing
-        star.body.gravity.y = 300;
+        star.body.gravity.y = 1000;
 
         //  This just gives each star a slightly random bounce value
-        star.body.bounce.y = 0.7 + Math.random() * 0.2;
+        // star.body.bounce.y = 0.7 + Math.random() * 0.2;
+        star.body.bounce.y = 0.1;
     }
-
     //  The score
     scoreText = game.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
-
     //  Our controls.
-    cursors = game.input.keyboard.createCursorKeys();
-    
+    cursors = game.input.keyboard.createCursorKeys();  
 }
 
 function update() {
@@ -117,33 +134,31 @@ function update() {
     //  Reset the players velocity (movement)
     player.body.velocity.x = 0;
 
-    if (cursors.left.isDown)
-    {
+    if (cursors.left.isDown){
         //  Move to the left
-        player.body.velocity.x = -150;
-
+        player.body.velocity.x = velocity*-1;
         player.animations.play('left');
     }
-    else if (cursors.right.isDown)
-    {
+    else if (cursors.right.isDown){
         //  Move to the right
-        player.body.velocity.x = 150;
-
+        player.body.velocity.x = velocity;
         player.animations.play('right');
     }
-    else
-    {
+    else{
         //  Stand still
         player.animations.stop();
-
         player.frame = 4;
     }
     
     //  Allow the player to jump if they are touching the ground.
-    if (cursors.up.isDown && player.body.touching.down)
-    {
-        player.body.velocity.y = -350;
+    if (cursors.up.isDown && player.body.touching.down){
+        player.body.velocity.y = downvelocity*-1;
     }
+
+    if (cursors.down.isDown){
+        player.body.velocity.y = 1000;
+    }
+
 
 }
 
