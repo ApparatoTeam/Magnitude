@@ -30,6 +30,9 @@ MagnitudeGame.prototype = {
         // fullscreen setup
         game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
         game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT;
+
+        game.load.image('star', 'assets/star.png');
+
     },
     create: function () {
 
@@ -40,6 +43,8 @@ MagnitudeGame.prototype = {
         game.world.setBounds(0, 0, 2000, 600);
         game.physics.p2.setBoundsToWorld(true, true, false, true, false);
         game.physics.p2.friction = 5;
+
+        game.physics.p2.setImpactEvents(true);
 
         clouds = game.add.tileSprite(0, 0, 2048,700, 'clouds');
         ground = game.add.sprite(game.world.width/2, game.world.height-24,'ground');
@@ -134,9 +139,9 @@ MagnitudeGame.prototype = {
         // buttonupleft.events.onInputDown.add(function(){left=true;duck=true;});
         // buttonupleft.events.onInputUp.add(function(){left=false;duck=false;});
 
-
     },
     update: function () {
+        fall_now();
         // define what should happen when a button is pressed
         if (left && !duck) {
             player.scale.x = -1;
@@ -188,24 +193,20 @@ function jump_now(){  //jump with small delay
     }
 }
 
-function fire_now(){
+function fall_now(){
     if (game.time.now > nextFire){
         nextFire = game.time.now + fireRate;
         var fireball = fireballs.getFirstExists(false); // get the first created fireball that no exists atm
+        var rand1 = game.rnd.realInRange(0,2000);
         if (fireball){
             fireball.exists = true;  // come to existance !
             fireball.lifespan=2500;  // remove the fireball after 2500 milliseconds - back to non-existance
-            if(player.scale.x == -1){  // if player looks to the left - create the fireball on his left side
-                fireball.reset(player.x-20, player.y);
-                game.physics.p2.enable(fireball);
-                fireball.body.moveLeft(800);
-                fireball.body.moveDown(180);
-            }else{
-                fireball.reset(player.x+20, player.y);
-                game.physics.p2.enable(fireball);
-                fireball.body.moveRight(800);
-                fireball.body.moveDown(180);
-            }
+
+            fireball.reset(rand1, 0);
+            game.physics.p2.enable(fireball);
+            fireball.body.moveRight(00);
+            fireball.body.moveDown(180);
+
             fireball.body.setCircle(10);
         }
     }
