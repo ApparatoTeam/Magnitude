@@ -1,6 +1,7 @@
 var game = new Phaser.Game(800, 600, Phaser.AUTO, 'magnitude-game');
 var fireballs, fireRate = 300, nextFire = 0, nextJump = 0, player; 
 var left=false, right=false, duck= false, fire=false, jump=false;
+var life = 3;
 
 var MagnitudeGame = function () {
     this.sprite;
@@ -35,8 +36,7 @@ MagnitudeGame.prototype = {
 
     },
     create: function () {
-
-        if (!game.device.desktop){ game.input.onDown.add(gofull, this); }
+        if (!game.device.desktop){ game.input.onDown.add(process.fullscreen, this); }
         
         game.physics.startSystem(Phaser.Physics.P2JS);
         game.physics.p2.gravity.y = 1200;
@@ -67,16 +67,6 @@ MagnitudeGame.prototype = {
         player.animations.add('duckwalk', [10,11,12], 3, true);
         game.camera.follow(player); //always center player
 
-        // create our virtual game controller buttons 
-        /*
-        buttonfire = game.add.button(700, 500, 'buttonfire', null, this, 0, 1, 0, 1); //fire ball
-        buttonfire.fixedToCamera = true;
-        buttonfire.events.onInputOver.add(function(){fire=true;});
-        buttonfire.events.onInputOut.add(function(){fire=false;});
-        buttonfire.events.onInputDown.add(function(){fire=true;});
-        buttonfire.events.onInputUp.add(function(){fire=false;});        
-        */
-
         buttonleft = game.add.button(32, 472, 'buttonhorizontal', null, this, 0, 1, 0, 1); //left
         buttonleft.fixedToCamera = true;
         buttonleft.events.onInputOver.add(function(){left=true;});
@@ -106,108 +96,107 @@ MagnitudeGame.prototype = {
         buttonjump.events.onInputDown.add(function(){jump=true;});
         buttonjump.events.onInputUp.add(function(){jump=false;});
 
-
+        //disabled buttons but also a part of the joystick control
         buttonbottomright = game.add.button(160, 536, 'buttondiagonal', null, this, 5, 5, 5, 5);
         buttonbottomright.fixedToCamera = true;
-        // buttonbottomright = game.add.button(160, 536, 'buttondiagonal', null, this, 7, 5, 7, 5);
-        // buttonbottomright.events.onInputOver.add(function(){right=true;duck=true;});
-        // buttonbottomright.events.onInputOut.add(function(){right=false;duck=false;});
-        // buttonbottomright.events.onInputDown.add(function(){right=true;duck=true;});
-        // buttonbottomright.events.onInputUp.add(function(){right=false;duck=false;});
-
         buttonbottomleft = game.add.button(32, 536, 'buttondiagonal', null, this, 4, 4, 4, 4);
         buttonbottomleft.fixedToCamera = true;
-        // buttonbottomleft = game.add.button(32, 536, 'buttondiagonal', null, this, 6, 4, 6, 4);
-        // buttonbottomleft.events.onInputOver.add(function(){left=true;duck=true;});
-        // buttonbottomleft.events.onInputOut.add(function(){left=false;duck=false;});
-        // buttonbottomleft.events.onInputDown.add(function(){left=true;duck=true;});
-        // buttonbottomleft.events.onInputUp.add(function(){left=false;duck=false;});
-
         var buttonupright = game.add.button(160, 408, 'buttondiagonal', null, this, 1, 1, 1, 1);
         buttonupright.fixedToCamera = true;
-        // var buttonupright = game.add.button(160, 408, 'buttondiagonal', null, this, 3, 1, 3, 1);
-        // buttonupright.events.onInputOver.add(function(){left=true;duck=true;});
-        // buttonupright.events.onInputOut.add(function(){left=false;duck=false;});
-        // buttonupright.events.onInputDown.add(function(){left=true;duck=true;});
-        // buttonupright.events.onInputUp.add(function(){left=false;duck=false;});
-
         var buttonupleft = game.add.button(32, 408, 'buttondiagonal', null, this, 0,0,0,0);
         buttonupleft.fixedToCamera = true;
-        // var buttonupleft = game.add.button(32, 408, 'buttondiagonal', null, this, 2,0,2,0);
-        // buttonupleft.events.onInputOver.add(function(){left=true;duck=true;});
-        // buttonupleft.events.onInputOut.add(function(){left=false;duck=false;});
-        // buttonupleft.events.onInputDown.add(function(){left=true;duck=true;});
-        // buttonupleft.events.onInputUp.add(function(){left=false;duck=false;});
+
+        lifeText = game.add.text(16, 16, 'Life: '+life, { fontSize: '32px', fill: '#000' });
+        lifeText.fixedToCamera = true;
+
+        player.body.onBeginContact.add(function(body, bodyB, shapeA, shapeB, equation){
+            if(body){
+                if(body.sprite.key == 'fireball'){
+                    console.log('You last hit: ' + body.sprite.key);
+                    process.lifeHandler();
+                }
+            }
+        }, this);
 
     },
     update: function () {
-        fall_now();
-        // define what should happen when a button is pressed
-        if (left && !duck) {
+        process.debris();
+        if(left && !duck){
             player.scale.x = -1;
             player.body.moveLeft(500);
             player.animations.play('walk');
         }
-        else if (right && !duck) {
+        else if(right && !duck){
             player.scale.x = 1;
             player.body.moveRight(500);
             player.animations.play('walk');
         } 
-        else if (duck && !left && !right) {
+        else if(duck && !left && !right){
             player.body.velocity.x=0;
             player.animations.play('duck');
         } 
-        else if (duck && right) {
+        else if(duck && right){
             player.scale.x = 1;
             player.body.moveRight(200);
             player.animations.play('duckwalk');
         }
-        else if (duck && left) {
+        else if(duck && left){
             player.scale.x = -1;
             player.body.moveLeft(200);
             player.animations.play('duckwalk');
         }
-        else {
+        else if(jump){
+            process.jump();
+            player.loadTexture('player', 5);
+        }   
+        else{
             player.loadTexture('player', 0);
         }
-        if (jump){ jump_now(); player.loadTexture('player', 5);}  //change to another frame of the spritesheet
-        if (fire){fire_now(); player.loadTexture('player', 8); }
-        if (duck){ player.body.setCircle(16,0,6);}else{ player.body.setCircle(22);}  //when ducking create a smaller hitarea - (radius,offsetx,offsety)
-        if (game.input.currentPointers == 0 && !game.input.activePointer.isMouse){ fire=false; right=false; left=false; duck=false; jump=false;} //this works around a "bug" where a button gets stuck in pressed state
     },
     render: function () {
         //game.debug.text('jump:' + jump + ' duck:' + duck + ' left:' + left + ' right:' + right + ' fire:' + fire, 20, 20);
     },
- };
+};
 game.state.add('Game', MagnitudeGame, true);
 
-//some useful functions
-function gofull(){ 
-    game.scale.startFullScreen(false);
-}
+var process = function () {
+    //"use strict";
+    return {
+        fullscreen:function(){
+            game.scale.startFullScreen(false);
+        },
+        lifeHandler: function(){
+            life = life - 1;
+            lifeText.text = 'Life: ' + life;
+        },
+        dead:function(){
 
-function jump_now(){  //jump with small delay
-    if (game.time.now > nextJump ){
-        player.body.moveUp(600);
-        nextJump = game.time.now + 1000;
-    }
-}
+        },
+        nextLevel:function(){
+        },
+        debris:function(){
+            if (game.time.now > nextFire){
+                nextFire = game.time.now + fireRate;
+                var fireball = fireballs.getFirstExists(false); // get the first created fireball that no exists atm
+                var rand1 = game.rnd.realInRange(0,2000);
+                if (fireball){
+                    fireball.exists = true;  // come to existance !
+                    fireball.lifespan=2500;  // remove the fireball after 2500 milliseconds - back to non-existance
 
-function fall_now(){
-    if (game.time.now > nextFire){
-        nextFire = game.time.now + fireRate;
-        var fireball = fireballs.getFirstExists(false); // get the first created fireball that no exists atm
-        var rand1 = game.rnd.realInRange(0,2000);
-        if (fireball){
-            fireball.exists = true;  // come to existance !
-            fireball.lifespan=2500;  // remove the fireball after 2500 milliseconds - back to non-existance
+                    fireball.reset(rand1, 0);
+                    game.physics.p2.enable(fireball);
+                    fireball.body.moveRight(00);
+                    fireball.body.moveDown(180);
 
-            fireball.reset(rand1, 0);
-            game.physics.p2.enable(fireball);
-            fireball.body.moveRight(00);
-            fireball.body.moveDown(180);
-
-            fireball.body.setCircle(10);
+                    fireball.body.setCircle(10);
+                }
+            }
+        },
+        jump:function(){
+            if (game.time.now > nextJump ){
+                player.body.moveUp(600);
+                nextJump = game.time.now + 1000;
+            }
         }
-    }
-}
+    };
+}();
