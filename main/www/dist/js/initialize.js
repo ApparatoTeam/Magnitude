@@ -5,7 +5,7 @@ define([], function(){
         initialize : function(){
             this.preloaderDONE();
             this.routing.boot();
-            this.cacheBackground();
+            //this.cacheBackground();
             this.audio.init();
             this.activeGameAbortionNotification();
          },
@@ -178,13 +178,11 @@ define([], function(){
                 scenes : function(){
                     $('#menu-link-scene').on('click', function(){
                         (app.f7.view).router.load({
-                            url : './views/scenes/router.html',
+                            url : './views/pages/gameplay.html',
                             animatePages : true
                          });
-                        requirejs(['js/mod/level-config/normalize'], function(obj) {
-                            obj.initialize({
-                                level : 1
-                             });
+                        requirejs(['js/mod/gameplay'], function(obj) {
+                            obj.initialize();
                          });
                     });
                  },

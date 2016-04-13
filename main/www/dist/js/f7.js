@@ -37,7 +37,7 @@ define(function(require){
             _1_checkVersion : function( self ){
                 self = this; 
                 
-                if( parseFloat( (navigator.userAgent).match(/Android\s+([\d\.]+)/)[1] ) >= 4.2 ){
+                if( parseFloat( (navigator.userAgent).match(/Android\s+([\d\.]+)/)[1] ) >= 4.2 || true ){
                     
                     if( 'Audio' in window ){
                         this.callback();

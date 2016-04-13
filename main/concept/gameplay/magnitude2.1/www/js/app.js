@@ -94,14 +94,6 @@ MagnitudeGame.prototype = {
 
         process.buttonHandler();
 
-        roads[25].lifespan=2500; //removing the ground
-        roads[26].lifespan=3000; //removing the ground
-        roads[45].lifespan=5000; //removing the ground
-        roads[30].lifespan=4500; //removing the ground
-        roads[32].lifespan=4000; //removing the ground
-
-        roads[0].lifespan=2500;
-        roads[0].body.moveUp(-100);
 
         lifeText = game.add.text(16, 16, 'Life: '+life, { fontSize: '32px', fill: '#000' });
         lifeText.fixedToCamera = true;
@@ -109,19 +101,7 @@ MagnitudeGame.prototype = {
         levelText = game.add.text(650, 16, 'Level: '+level, { fontSize: '32px', fill: '#000' });
         levelText.fixedToCamera = true;
 
-        scene.animations.play('scene1');
-
-        player.body.onBeginContact.add(function(body, bodyB, shapeA, shapeB, equation){
-            if(body){
-                if((body.sprite.key == 'fireball') || (body.sprite.key == 'deathground')){
-                    process.lifeHandler();
-                }
-                else if((body.sprite.key == 'safePlace')){
-                    process.levelHandler();
-                    scene.animations.play('scene2');
-                }
-            }
-        }, this);
+        process.core_game(level);
     },
     update: function () {
         process.debris();
@@ -177,18 +157,29 @@ var process = function () {
             lifeText.text = 'Life: ' + life;
             player.animations.play('dead');
             game.paused = true;
-            var respawn = setTimeout(function(){
-                game.paused = false;
-                player.body.reset(100, 100);
-            },3000);
+            if(life>0){
+                lifeNotif = game.add.text(100 ,150, 'You died. Respawn in 3 seconds. ', { font: '30px Arial', fill: '#fff' });
+                var respawn = setTimeout(function(){
+                    game.paused = false;
+                    player.body.reset(100, 100);
+                    lifeNotif.destroy();
+                },3000);
+            }
+            else{
+                lifeNotif = game.add.text(100 ,150, 'You died. No life left. :(', { font: '30px Arial', fill: '#fff' });
+            }
+            lifeNotif.fixedToCamera = true;
         },
         levelHandler: function(){
             level = level + 1;
             levelText.text = 'Level: ' + level;
             game.paused = true;
+            levelNotif = game.add.text(100 ,150, 'You passed level: '+(level-1), { font: '30px Arial', fill: '#fff' });
+                levelNotif.fixedToCamera = true;
             var respawn = setTimeout(function(){
                 game.paused = false;
                 player.body.reset(100, 100);
+                levelNotif.destroy();
             },3000);
         },
         dead:function(){
@@ -208,9 +199,8 @@ var process = function () {
 
                     fireball.reset(rand1, 0);
                     game.physics.p2.enable(fireball);
-                    fireball.body.moveRight(00);
                     fireball.body.moveDown(180);
-                    fireball.body.mass = 10;
+                    fireball.body.mass = 100;
                     fireball.body.setCircle(50);
                 }
             }
@@ -250,8 +240,29 @@ var process = function () {
             buttonjump.events.onInputDown.add(function(){jump=true;});
             buttonjump.events.onInputUp.add(function(){jump=false;});
         },
-        game:function(level){
-            
+        core_game:function(level){
+            scene.animations.play('scene'+level);
+            console.log(level);
+            roads[25].lifespan=2500; //removing the ground
+            roads[26].lifespan=3000; //removing the ground
+            roads[45].lifespan=5000; //removing the ground
+            roads[30].lifespan=4500; //removing the ground
+            roads[32].lifespan=4000; //removing the ground
+
+            roads[0].lifespan=2500;
+            roads[0].body.moveUp(-100);
+
+            player.body.onBeginContact.add(function(body, bodyB, shapeA, shapeB, equation){
+                if(body){
+                    if((body.sprite.key == 'fireball') || (body.sprite.key == 'deathground')){
+                        process.lifeHandler();
+                    }
+                    else if((body.sprite.key == 'safePlace')){
+                        process.levelHandler();
+                        scene.animations.play('scene2');
+                    }
+                }
+            }, this);
         }
     };
 }();    
