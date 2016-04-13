@@ -1,108 +1,14 @@
 <!doctype html> 
 <html lang="en"> 
-<head> 
-	<meta charset="UTF-8" />
-    <title>Phaser - Making your first game, part 9</title>
-	<script type="text/javascript" src="js/phaser.min.js"></script>
-    <style type="text/css">
-        body {
-            margin: 0;
-        }
-    </style>
-</head>
-<body>
-
-<script type="text/javascript">
-var player;
-var map;
-var tileset;
-var layer;
-var p;
-var cursors;
-var game = new Phaser.Game(800, 300, Phaser.CANVAS, 'magnitude-game');
-
-var MagnitudeGame = function () {
-    this.sprite;
-    this.pad;
-    this.stick;
-};
-
-MagnitudeGame.prototype = {
-    init: function () {
-    },
-    preload: function () {
-        game.load.tilemap('tile_magnitude', 'assets/tile.json', null, Phaser.Tilemap.TILED_JSON);
-        game.load.image('tiles', 'assets/magnitude.png');
-        game.load.spritesheet('player', 'assets/dude.png', 32, 48);
-    },
-    create: function () {
-        game.physics.startSystem(Phaser.Physics.ARCADE);
-
-        game.stage.backgroundColor = '#787878';
-
-        map = game.add.tilemap('tile_magnitude');
-
-        map.addTilesetImage('magnitude-scene-1', 'tiles');
-
-        //  14 = ? block
-         map.setCollisionBetween(14, 15);
-
-        map.setCollisionBetween(15, 16);
-        map.setCollisionBetween(20, 25);
-        map.setCollisionBetween(27, 29);
-        map.setCollision(40);
-        
-        layer = map.createLayer('scene1');
-
-        //  Un-comment this on to see the collision tiles
-        // layer.debug = true;
-
-        layer.resizeWorld();
-
-        player = game.add.sprite(32, 32, 'player');
-
-        game.physics.arcade.enable(player);
-        player.body.bounce.y = 0.2;
-        player.body.linearDamping = 1;
-        player.body.collideWorldBounds = true;
-        player.body.gravity.y = 300;
-
-        player.animations.add('left', [0, 1, 2, 3], 10, true);
-        player.animations.add('right', [5, 6, 7, 8], 10, true);
-
-        game.camera.follow(player);
-        cursors = game.input.keyboard.createCursorKeys();
-    },
-    update: function () {
-        game.physics.arcade.collide(player, layer);
-        player.body.velocity.x = 0;
-        if (cursors.up.isDown){
-            if (player.body.onFloor()){
-                player.body.velocity.y = -200;
-            }
-        }
-
-        if (cursors.left.isDown){
-            player.body.velocity.x = -150;
-            player.animations.play('left');
-        }
-        else if (cursors.right.isDown){
-            player.body.velocity.x = 150;
-            player.animations.play('right');
-        }
-        else{
-            //  Stand still
-            player.animations.stop();
-            player.frame = 4;
-        }
-    },
-    render: function () {
-        game.debug.bodyInfo(player, 32, 320);
-    }
-};
-
-game.state.add('Game', MagnitudeGame, true);
-</script>
-
-</body>
+    <head> 
+        <meta charset="UTF-8" />
+        <title>Phaser - Making your first game, part 9</title>
+        <script type="text/javascript" src="js/phaser.min.js"></script>
+        <style type="text/css">
+            body {margin: 0;}
+        </style>
+    </head>
+    <body>
+        <script type="text/javascript" src="js/app.js"></script>
+    </body>
 </html>

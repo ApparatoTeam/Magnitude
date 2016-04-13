@@ -1,7 +1,8 @@
-var game = new Phaser.Game(800, 600, Phaser.AUTO, 'magnitude-game');
+var game = new Phaser.Game(800, 700, Phaser.AUTO, 'magnitude-game');
 var fireballs, fireRate = 300, nextFire = 0, nextJump = 0, player; 
 var left=false, right=false, duck= false, fire=false, jump=false;
 var life = 3;
+var grounds = [];
 
 var MagnitudeGame = function () {
     this.sprite;
@@ -14,12 +15,12 @@ MagnitudeGame.prototype = {
     },
     preload: function () {
         //spritesheet for animations
-        game.load.spritesheet('player', 'assets/newplayer1.png',50,50); // key, sourcefile, framesize x, framesize y
+        game.load.spritesheet('player', 'assets/player.png',200,200); // key, sourcefile, framesize x, framesize y
        
         //background, ground, fireball images
         game.load.image('ground', 'assets/2048x48-ground.png');
-        game.load.image('clouds', 'assets/scene1.png');
-        game.load.image('fireball', 'assets/fireball.png',40,30);
+        game.load.image('clouds', 'assets/scene1.gif');
+        game.load.image('fireball', 'assets/fireball.png',100,100);
 
         //gamepad buttons
         game.load.spritesheet('buttonvertical', 'assets/button-vertical.png',64,64);
@@ -36,20 +37,28 @@ MagnitudeGame.prototype = {
 
     },
     create: function () {
+        game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT;
         if (!game.device.desktop){ game.input.onDown.add(process.fullscreen, this); }
         
         game.physics.startSystem(Phaser.Physics.P2JS);
         game.physics.p2.gravity.y = 1200;
-        game.world.setBounds(0, 0, 2000, 600);
+        game.world.setBounds(0, 0, 5000, 600);
         game.physics.p2.setBoundsToWorld(true, true, false, true, false);
         game.physics.p2.friction = 5;
 
         game.physics.p2.setImpactEvents(true);
 
-        clouds = game.add.tileSprite(0, 0, 2048,700, 'clouds');
-        ground = game.add.sprite(game.world.width/2, game.world.height-24,'ground');
-        game.physics.p2.enable(ground);
-        ground.body.static=true;
+        clouds = game.add.tileSprite(0, 0, 5000,600, 'clouds');
+
+
+        for(var i = 0; i < (5000 / 100); i=i+100){
+            ground = game.add.sprite(i, game.world.height+80,'ground');//game.world.width/2 ,game.world.height-24
+            //ground.lifespan=2500;  // remove the fireball after 2500 milliseconds - back to non-existance
+            game.physics.p2.enable(ground);
+            grounds.push(ground);
+            //ground.body.static=true;
+            console.log('x');
+        }
 
         fireballs = game.add.group();
         fireballs.createMultiple(500, 'fireball', 0, false);
@@ -62,9 +71,10 @@ MagnitudeGame.prototype = {
         player.body.mass = 4;
 
         // add some animations 
-        player.animations.add('walk', [1,2,3,4], 10, true);  // (key, framesarray, fps,repeat)
-        player.animations.add('duck', [11], 0, true);
-        player.animations.add('duckwalk', [10,11,12], 3, true);
+        player.animations.add('walk', [1,2,3,4,5,6], 10, true);  // (key, framesarray, fps,repeat)
+        player.animations.add('duck', [7], 0, true);
+        player.animations.add('duckwalk', [7,7,7], 3, true);
+        player.animations.add('dead', [8,8,8], 3, true);
         game.camera.follow(player); //always center player
 
         buttonleft = game.add.button(32, 472, 'buttonhorizontal', null, this, 0, 1, 0, 1); //left
@@ -115,6 +125,7 @@ MagnitudeGame.prototype = {
                     console.log('You last hit: ' + body.sprite.key);
                     process.lifeHandler();
                 }
+                console.log('You last hit: ' + body.sprite.key);
             }
         }, this);
 
@@ -178,7 +189,7 @@ var process = function () {
             if (game.time.now > nextFire){
                 nextFire = game.time.now + fireRate;
                 var fireball = fireballs.getFirstExists(false); // get the first created fireball that no exists atm
-                var rand1 = game.rnd.realInRange(0,2000);
+                var rand1 = game.rnd.realInRange(0,5000);
                 if (fireball){
                     fireball.exists = true;  // come to existance !
                     fireball.lifespan=2500;  // remove the fireball after 2500 milliseconds - back to non-existance
@@ -199,4 +210,4 @@ var process = function () {
             }
         }
     };
-}();
+}();    
