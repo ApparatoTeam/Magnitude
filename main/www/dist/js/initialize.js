@@ -187,7 +187,6 @@ define([], function(){
                              });
                          });
                     });
-
                  },
 
                 settings : function( self, dom ){
