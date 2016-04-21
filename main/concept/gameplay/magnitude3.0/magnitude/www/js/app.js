@@ -42,9 +42,16 @@ MagnitudeGame.prototype = {
         game.load.spritesheet('safePlace', 'assets/btn-right.png',100,100);
 
         game.load.bitmapFont('quake', 'assets/font/font.png', 'assets/font/font.fnt');
+
+        game.load.audio('bgSounds', 'assets/audio/earthquake.mp3');
+        game.load.audio('cry', 'assets/audio/cry.mp3');
+        game.load.audio('gotLife', 'assets/audio/buttons.mp3');
+        game.load.audio('button', 'assets/audio/buttons.mp3');
     },
     create: function () {
-
+        cry = game.add.audio('cry');
+        bgSounds = game.add.audio('bgSounds');
+        bgSounds.loopFull(0.6);
 
         var bound = 5000;
         // fullscreen setup
@@ -138,6 +145,7 @@ MagnitudeGame.prototype = {
         padlevel.fixedToCamera = true;
         levelText.fixedToCamera = true;
         process.core_game(level);
+        
     },
     update: function () {
         process.debris(level);
@@ -187,12 +195,11 @@ var process = function () {
             game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT;
         },
         lifeHandler: function(){
+            player.animations.play('dead');
             life = life - 1;
             lifeText.text = 'Life: ' + life;
-            player.animations.play('dead');
             process.modal('Respawn',true,1000);
             game.paused = true;
-
             var a=0;
             var respawn = setInterval(function(){
                 a++;
@@ -326,6 +333,8 @@ var process = function () {
                 if(body){
                     // console.log(body.sprite.key);
                     if((body.sprite.key == 'fireball') || (body.sprite.key == 'deathground')){
+                        cry.play();
+                        game.device.vibrate = true;
                         process.lifeHandler();
                     }
                     else if((body.sprite.key == 'life')){
