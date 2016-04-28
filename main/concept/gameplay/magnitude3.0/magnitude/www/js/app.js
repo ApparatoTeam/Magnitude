@@ -1,5 +1,3 @@
-
-
 var fireballs, fireRate = 1000, nextFire = 0, nextJump = 0, player; 
 var left=false, right=false, duck= false, fire=false, jump=false;
 var life = 3;
@@ -11,7 +9,6 @@ var width = 736;
 var game = new Phaser.Game(width, height, Phaser.AUTO, 'magnitude-game');
 //var grounds = [];
 var style = { font: "quake", fill: "#ff0044", align: "center" };
-
 
 var MagnitudeGame = function () {
     this.sprite;
@@ -32,9 +29,9 @@ MagnitudeGame.prototype = {
         game.load.image('pad', 'assets/pad.png',500,500);
         game.load.image('road', 'assets/road.png',200,200);
         game.load.image('deathground', 'assets/lava.png',100,100);
-        // game.load.image('clouds', 'assets/scene2.png');
         game.load.image('fireball', 'assets/debris.png',200,200);
 
+        game.load.spritesheet('debris', 'assets/debris-sprite.png',100,100);
         game.load.spritesheet('btn-left', 'assets/btn-left.png',100,100);
         game.load.spritesheet('btn-right', 'assets/btn-right.png',100,100);
         game.load.spritesheet('btn-up', 'assets/btn-up.png',100,100);
@@ -146,6 +143,10 @@ MagnitudeGame.prototype = {
         levelText.fixedToCamera = true;
         process.core_game(level);
         
+
+                                var die = game.add.tween(player).to({ y:500,x:1000}, 1000, Phaser.Easing.Bounce.InOut, false, 1000, 4, true);
+                        die.start();
+
     },
     update: function () {
         process.debris(level);
@@ -195,37 +196,41 @@ var process = function () {
             game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT;
         },
         lifeHandler: function(){
-            player.animations.play('dead');
+            cry.play();
+            process.vibrate(3000);
+
             life = life - 1;
             lifeText.text = 'Life: ' + life;
-            process.modal('Respawn',true,1000);
-            game.paused = true;
-            var a=0;
-            var respawn = setInterval(function(){
-                a++;
-                if(a==3){
-                    game.paused = false;
-                    player.body.reset(100, 100);
-                    clearInterval(respawn);
-                }
-                else{
-                }
-            },1000);
+            process.modal('Respawn in: \n3',true,1000);
+            game.physics.p2.pause();
 
             if(life<=0){
                 life = 3;
                 level = 1;
-                game.state.restart();
                 process.modal('Game Over',true,1000);
+                game.physics.p2.resume();
+                game.state.restart();
+            }
+            else{
+                var x = 3;
+                var respawn = setInterval(function(){
+                    x--;
+                    process.modal("Respawn in: \n"+x,true,1000);
+                    if(x==0){
+                        game.physics.p2.resume();
+                        player.body.reset(100, 100);
+                        clearInterval(respawn);
+                    }
+                },1000);                
             }
         },
         levelHandler: function(){
             level = level + 1;
             levelText.text = 'Level: ' + level;
-            game.paused = true;
-            process.modal('You passed\nlevel: '+(level-1),true,1000);
+            process.modal('You passed\nlevel: '+(level-1),true,3000);
+            game.physics.p2.pause();
             var respawn = setTimeout(function(){
-                game.paused = false;
+                game.physics.p2.resume();
                 player.body.reset(100, 100);
             },3000);
 
@@ -251,15 +256,14 @@ var process = function () {
                 var rand1 = game.rnd.realInRange(1000,4440);
                 if (fireball){
                     fireball.exists = true;  // come to existance !
-                    fireball.lifespan=2500;  // remove the fireball after 2500 milliseconds - back to non-existance
-
+                    fireball.lifespan=3000;  // remove the fireball after 2500 milliseconds - back to non-existance
                     fireball.scale.x = 0.5;
                     fireball.scale.y = 0.5;
-                    fireball.reset(rand1, 0);
+                    fireball.reset(rand1, -100);
                     game.physics.p2.enable(fireball);
-                    fireball.body.moveDown(180);
+                    fireball.body.moveDown(500);
                     fireball.body.mass = 1000;
-                    fireball.body.setCircle(20);
+                    fireball.body.setRectangle(20);
                 }
             }
         },
@@ -327,14 +331,14 @@ var process = function () {
                 roads[index].body.moveDown(180); //removing the ground
             },time);
         },
+        vibrate:function(time){
+            navigator.vibrate(time);
+        },
         core_game:function(level){
             process.bgQuake();
             player.body.onBeginContact.add(function(body, bodyB, shapeA, shapeB, equation){
                 if(body){
-                    // console.log(body.sprite.key);
                     if((body.sprite.key == 'fireball') || (body.sprite.key == 'deathground')){
-                        cry.play();
-                        game.device.vibrate = true;
                         process.lifeHandler();
                     }
                     else if((body.sprite.key == 'life')){
